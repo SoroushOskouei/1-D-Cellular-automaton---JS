@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script>
+    function plotAutomaton(rule) {
+      const canvas = document.getElementById("automaton");
+      const ctx = canvas.getContext("2d");
+
+      const cellSize = 2;
+      const width = canvas.width / cellSize;
+      const height = canvas.height / cellSize;
+
+      const state = Array(width).fill(0).map(() => Array(height).fill(2));
+
+      // const state = Array.from({length: width}, () => Math.floor(Math.random() * 3));
+      // for(var i = 0; i < width; i++){
+      // state[i][0] = Math.floor(Math.random() * 3);
+    // }
+
+      state[width / 2][0] = 0;
+      // state[width / 2-2 ][0] = 0;   // here, comment this and see how it changes 
+
+
+      for (let y = 0; y < height - 1; y++) {
+        for (let x = 0; x < width; x++) {
+          const left3 = state[(x + width - 12) % width][y];
+          const left2 = state[(x + width - 6) % width][y];
+          const left = state[(x + width - 1) % width][y];
+          const center = state[x][y];
+          const right = state[(x + 1) % width][y];
+          const right2 = state[(x + 6) % width][y];
+          const right3 = state[(x + 12) % width][y];
+
+
+          const next = (rule >> (left * 9 + center * 3 + right)) % 3;
+          // const next = (rule >> (right3 * 15625 + left3 * 3125 + right2 * 625 + left2 * 125 + left * 25 + center * 5 + right)) % 5;
+          state[x][y + 1] = next;
+        }
+      }
+
+      const colors = ["gray", "black", "white", "red", "blue"];
+
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          ctx.fillStyle = colors[state[x][y]];
+          ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+  </script>
+</head>
+<body style="margin: 0px;">
+  <canvas id="automaton" width="1800" height="900"></canvas>
+  <script>
+    // const rule = 121614611188;
+    // const rule = 6668;
+    // const rule = 7905;
+    // const rule = 615;
+    // const rule = 12181;
+    // const rule = 12166;
+    // const rule = 12103;
+    // const rule = 12106;
+    // const rule = 121102;
+    // const rule = 161101;
+    // const rule = 161103;
+    // const rule = 161104;
+    const rule = 161107;
+    // const rule = 161110;
+    // const rule = 161113;
+    // const rule = 1721043;
+    // const rule = 17333322;
+    // const rule = 17333326;
+    // const rule = 17333330;
+    // const rule = 17333332;
+    // const rule = 17333338;
+    // const rule = 17777791;
+    // const rule = 121;
+
+      ////***************************** Coment the line that makes an initial starting point at line 20, see how it changes, the line will be cut in the middle in rule 17777791 for N=3
+
+    
+
+
+
+
+    plotAutomaton(rule);
+  </script>
+</body>
+</html>
